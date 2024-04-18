@@ -17,11 +17,6 @@
             font-family: "Cute Font", sans-serif;
         }
 
-
-
-
-
-
         .h1 {
             font-size: 30px;
 
@@ -167,6 +162,8 @@
         }
 
         .tgbtn {
+            margin: 15px 0px 15px 25px;
+
             font-size: 15px;
             font-weight: bold;
             font-family: "Instrument Sans", sans-serif;
@@ -175,14 +172,11 @@
             cursor: pointer;
 
 
-            padding-right: 0%;
+            padding : 1px 6px
 
         }
 
-        .tgbtn:hover {
-
-            color: silver;
-        }
+        
 
         .two {
             background-color: transparent;
@@ -201,27 +195,27 @@
 
         }
 
-        .two:hover {
-            color: rgb(1, 20, 126);
-        }
+        
     </style>
 
     <script>
-        /* 사용하고자 하는 api url*/
         let url = "https://worldtimeapi.org/api/timezone/Asia/Seoul"
         let setTime = 3;
+        /* 정규 표현식(특정한 규칙을 가진 문자열의 집합을 표현하는데 사용하는 형식 언어) */
+        var regex = /[^0-9]/g;
 
         function First_Run() {
-            /* fetch를 이용한 url 통신 */
-            fetch(url).then(res => res.json()).then(data => {
-                /* 정규 표현식(특정한 규칙을 가진 문자열의 집합을 표현하는데 사용하는 형식 언어) */
-                var regex = /[^0-9]/g;
-                /*datetime라는 이름의 데이터를 가져와서 regex형식의 기준으로 나눠 배열로 저장. 나눈 데이터를 
-                문자열 양 끝의 공백을 제거하고 원본 문자열을 수정하지 않고 새로운 문자열을 반환 */
-                let mise = data['datetime'].split(regex).map(x => x.trim());;
-                /*문자열 변경*/
-                $(".time").text(`${mise[0]}년 ${mise[1]}월 ${mise[2]}일 ${mise[3]}시 ${mise[4]}분`);
-            })
+            try {
+                /* fetch를 이용한 url 통신 */
+                fetch(url).then(res => res.json()).then(data => {
+                    /*datetime라는 이름의 데이터를 가져와서 regex형식의 기준으로 나눠 배열로 저장. 나눈 데이터를 
+                    문자열 양 끝의 공백을 제거하고 원본 문자열을 수정하지 않고 새로운 문자열을 반환 */
+                    let mise = data['datetime'].split(regex).map(x => x.trim());;
+                    /*문자열 변경*/
+                    $(".time").text(`${mise[0]}년 ${mise[1]}월 ${mise[2]}일 ${mise[3]}시 ${mise[4]}분`);
+                })
+            }
+            catch { $(".time").text("다시 연결중.."); }
         }
 
         function startInterval(seconds, callback) {
@@ -236,11 +230,22 @@
         }
 
         $(document).ready(function () {
+            $('.tgbtn').click(function () {
+                if ($(this).html() == "모두보기" ) {
+                    $(this).css("color", "black")
+                    $(this).html('모두보기');
+                }
+                else { $(this).html('모두보기'); $(this).css("color", "black")}
+            })
+        });
+
+        $(document).ready(function () {
             $('.two').click(function () {
-                if ($(this).html() == "팔로잉") {
+                if ($(this).html() == "팔로잉" ) {
+                    $(this).css("color", "rgb(18, 140, 255)")
                     $(this).html('팔로우');
                 }
-                else { $(this).html('팔로잉'); }
+                else { $(this).html('팔로잉'); $(this).css("color", "rgb(1, 20, 126)")}
             })
         });
     </script>
@@ -298,7 +303,7 @@
                     <h2 style="font-size: 15px; margin-bottom: 5px; margin-left: 15px;"> 차분하조 </h2>
                 </div>
 
-                <p>회원님을 위한 추천<button onclick="tgl()" class="tgbtn">&nbsp;&nbsp;&nbsp; 모두 보기</button></p>
+                <p>회원님을 위한 추천<button onclick="tgl()" class="tgbtn"> 모두 보기</button></p>
 
                 <div id="nope">
                     <div id="sort" style="margin-top: 10px;">
